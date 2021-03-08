@@ -1,4 +1,4 @@
-package Contas;
+package CONTA;
 
 import java.util.Scanner;
 
@@ -17,7 +17,7 @@ public class Main {
 		char opcao, opcao2;
 		// String pegaresposta;
 
-		ContaCorrente pessoa = new ContaCorrente();
+		//ContaCorrente pessoa = new ContaCorrente();
 
 		do {
 			System.out.println("[BANCO G-9]\n[SLOGAN]\n");
@@ -101,14 +101,14 @@ public class Main {
 				while (cont != 'N') {
 					System.out.println("[BANCO G-9]\n[SLOGAN]");
 					System.out.println("\nCONTA[CONTA CORRENTE]\n");
-					System.out.println("Saldo atual R$ " + pessoa.getSaldo());
-					System.out.println("MOVIMENTOS-CREDITO " + pessoa.getMovimento());
+				//	System.out.println("Saldo atual R$ " + pessoa.getSaldo());
+				//	System.out.println("MOVIMENTOS-CREDITO " + pessoa.getMovimento());
 
 					System.out.println("\nDeseja um talÃ£o? S/N ?");
 					portalao = leia.next().toUpperCase().charAt(0);
 					if (portalao == 'S') {
-						pessoa.setContadorTalao();
-						pessoa.setMovimento();
+				//		pessoa.setContadorTalao();
+				//		pessoa.setMovimento();
 					}
 
 					System.out.println("Continuar S/N ?");
@@ -116,6 +116,76 @@ public class Main {
 
 				}
 			} 
+			
+			/* ======================= */
+			/* PERFIL - CONTA ESPECIAL */
+			/* ======================= */
+			
+			// Conta especial
+			if (question1 == '3') {
+				
+				System.out.println("Digite o número da conta");
+				int numero = leia.nextInt();
+
+				System.out.println("Digite o número do seu CPF");
+				String cpf = leia.next();
+				
+				boolean ativa = true;
+				double limite = 1000;
+				ContaEspecial ce = new ContaEspecial(numero, cpf, ativa, limite);
+				
+				while (cont != 'N' && ce.getContador() < 10) {
+						
+					if (ce.getNumero() == numero && ce.getCpf().equalsIgnoreCase(cpf)) {
+						System.out.println();
+						System.out.println("__[BANCO G-9]__\n__[O BANCO FEITO PARA VOCÊ]__");
+						System.out.println("\n__[CONTA ESPECIAL]__\n");
+						System.out.println("Nº Conta Corrente: " + ce.getNumero());
+						System.out.println("CPF do titular: " + ce.getCpf());
+
+						System.out.println("Digite C, para usar a função Credito, Digite D, para usar a função debito");
+						question1 = leia.next().toUpperCase().charAt(0);
+
+						if (question1 == 'C') {
+							System.out.println("--> CREDITO <--");
+							System.out.println("Digite seu deposito aqui: ");
+							deposito = leia.nextDouble();
+							
+							ce.credito(deposito);
+							System.out.println("Saldo atual: " + ce.getSaldo());
+							
+						} else {
+							System.out.println("--> DEBITO <--");
+							System.out.println("Digite seu deposito aqui: ");
+							deposito = leia.nextDouble();
+							
+							ce.debito(deposito);
+							System.out.println("Saldo atual: " + ce.getSaldo());
+							
+						}
+
+					
+						System.out.println("Para continuar depositando, digite 1. \n Para sair, digite 6.");
+						question1 = leia.next().toUpperCase().charAt(0);
+						
+						if (question1 == '6') {
+							break;
+						}
+
+				
+					} else {
+						System.err.println("---> SENHA OU LOGIN INVÁLIDOS <---");
+						System.err.println("---> TENTE NOVAMENTE <---");
+						break;
+					}
+				}
+				if (ce.getContador() == 10) {
+					System.out.println("Você atingiu o seu limite de Movimentos");
+				}
+			} else if (question1 == '6') {
+				// mov = 2;
+				break;
+			}
 			
 			// conta estudantil
 			if (question1 == '5') {
@@ -167,5 +237,7 @@ public class Main {
 
 		System.err.println("CAIXA FECHADO!!!\nNão esqueça de tirar o cartão da maquina!");
 		leia.close();
+
 	}
+
 }
